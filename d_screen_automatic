@@ -1,0 +1,61 @@
+import os
+from subprocess import call, Popen, PIPE
+import time
+
+
+
+
+#keeps mac awake, amphetamine automatically starts with an indefinite session
+#os.system("open /Applications/Amphetamine.app")
+
+
+
+#set volume for spotify
+#call(["osascript -e 'set volume output volume 40'"], shell=True)
+
+#turn on do not disturb
+#script = ' tell application "System Events" to keystroke "D" using {command down, shift #down, option down, control down}'
+#popen_script_2 = Popen(['osascript', '-'], stdin=PIPE, stdout=PIPE, stderr=PIPE, #universal_newlines=True)
+#stdout, stderr = popen_script_2.communicate(script)
+
+#saving applescript for launching in full screen
+popen_script_open = '''set MyApps to {"Visual Studio Code", "Safari", "Spotify"}
+repeat with MyApp in MyApps
+    tell application MyApp
+        activate
+        delay 3
+    end tell
+    tell application "System Events"
+        tell process MyApp
+            set value of attribute "AXFullScreen" of window 1 to true
+            delay 3
+        end tell
+    end tell
+end repeat'''
+
+#launches applications in full screen
+popen_script_4 = Popen(['osascript', '-'], stdin=PIPE, stdout=PIPE, stderr=PIPE, universal_newlines=True)
+stdout, stderr = popen_script_4.communicate(popen_script_open)
+
+#script for launching messaging apps in a new desktop
+script_newDesktop = '''tell application "System Events"
+    tell application "Mission Control" to launch
+    tell group 2 of group 1 of group 1 of process "Dock"
+        click (every button whose value of attribute "AXDescription" is "add desktop")
+        tell list 1
+            set countSpaces to count of buttons
+            delay 0.5
+            click button (countSpaces)
+        end tell
+    end tell
+
+    delay 0.5
+    tell application "Messages" to launch
+    tell application "WhatsApp" to launch
+    tell application "Discord" to launch
+end tell'''
+
+#launches new apps in new desktop
+#popen_script_3 = Popen(['osascript', '-'], stdin=PIPE, stdout=PIPE, stderr=PIPE, #universal_newlines=True)
+#stdout, stderr = popen_script_3.communicate(script_newDesktop)
+

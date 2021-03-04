@@ -3,23 +3,22 @@ from subprocess import call, Popen, PIPE
 import time
 
 
-
-
 #keeps mac awake, amphetamine automatically starts with an indefinite session
-#os.system("open /Applications/Amphetamine.app")
+os.system("open /Applications/Amphetamine.app")
 
-
+#launch vs code first as it takes a while to run and initialize
+os.system("open /Applications/'Visual Studio Code'.app")
 
 #set volume for spotify
-#call(["osascript -e 'set volume output volume 40'"], shell=True)
+call(["osascript -e 'set volume output volume 40'"], shell=True)
 
 #turn on do not disturb
-#script = ' tell application "System Events" to keystroke "D" using {command down, shift #down, option down, control down}'
-#popen_script_2 = Popen(['osascript', '-'], stdin=PIPE, stdout=PIPE, stderr=PIPE, #universal_newlines=True)
-#stdout, stderr = popen_script_2.communicate(script)
+script_turn_on_dnd = ' tell application "System Events" to keystroke "D" using {command down, shift down, option down, control down}'
+popen_script_dnd = Popen(['osascript', '-'], stdin=PIPE, stdout=PIPE, stderr=PIPE, universal_newlines=True)
+stdout, stderr = popen_script_dnd.communicate(script_turn_on_dnd)
 
-#saving applescript for launching in full screen
-popen_script_open = '''set MyApps to {"Visual Studio Code", "Safari", "Spotify"}
+#saving applescript for launching safari and spotify in full screen
+script_open_full = '''set MyApps to {"Safari", "Spotify"}
 repeat with MyApp in MyApps
     tell application MyApp
         activate
@@ -28,17 +27,17 @@ repeat with MyApp in MyApps
     tell application "System Events"
         tell process MyApp
             set value of attribute "AXFullScreen" of window 1 to true
-            delay 3
+            delay 1
         end tell
     end tell
 end repeat'''
 
-#launches applications in full screen
-popen_script_4 = Popen(['osascript', '-'], stdin=PIPE, stdout=PIPE, stderr=PIPE, universal_newlines=True)
-stdout, stderr = popen_script_4.communicate(popen_script_open)
+#launches safari and spotify in full screen
+popen_script_full_screen = Popen(['osascript', '-'], stdin=PIPE, stdout=PIPE, stderr=PIPE, universal_newlines=True)
+stdout, stderr = popen_script_full_screen.communicate(script_open_full)
 
-#script for launching messaging apps in a new desktop
-script_newDesktop = '''tell application "System Events"
+#script for launching social apps whatsapp, discord, and messages in a new desktop
+script_newDesktop_messaging = '''tell application "System Events"
     tell application "Mission Control" to launch
     tell group 2 of group 1 of group 1 of process "Dock"
         click (every button whose value of attribute "AXDescription" is "add desktop")
@@ -55,7 +54,8 @@ script_newDesktop = '''tell application "System Events"
     tell application "Discord" to launch
 end tell'''
 
-#launches new apps in new desktop
-#popen_script_3 = Popen(['osascript', '-'], stdin=PIPE, stdout=PIPE, stderr=PIPE, #universal_newlines=True)
-#stdout, stderr = popen_script_3.communicate(script_newDesktop)
+#launches whatsapp, discord, and messages apps in new desktop
+popen_script_messaging = Popen(['osascript', '-'], stdin=PIPE, stdout=PIPE, stderr=PIPE, universal_newlines=True)
+stdout, stderr = popen_script_messaging.communicate(script_newDesktop_messaging)
+
 
